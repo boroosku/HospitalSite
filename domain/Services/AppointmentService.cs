@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,12 +28,22 @@ namespace domain.Services
         {
             var appoinment = _repository.MakeAppointmentOnSelectedDateSpecificDoctor(id, selectedDate);
 
+            if (_repository.IsAppointmentExist(selectedDate))
+            {
+                return Result.Fail<Appointment>("Appointment already exists");
+            }
+
             return appoinment is null ? Result.Fail<Appointment>("Appointment not set") : Result.Ok(appoinment);
         }
 
         public Result<Appointment> MakeAppointmentOnSelectedDateFreeDoctor(DateTime selectedDate, DrSpec spec)
         {
             var appoinment = _repository.MakeAppointmentOnSelectedDateFreeDoctor(selectedDate, spec);
+
+            if (_repository.IsAppointmentExist(selectedDate))
+            {
+                return Result.Fail<Appointment>("Appointment already exists");
+            }
 
             return appoinment is null ? Result.Fail<Appointment>("Appointment not set") : Result.Ok(appoinment);
         }
