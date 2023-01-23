@@ -38,9 +38,12 @@ namespace domain.Services
             if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
                 return Result.Fail("Login or Password was not specified");
 
+
             var isUser = _repository.CheckUserExists(login, password);
 
             return isUser is null ? Result.Fail("User not exists") : Result.Ok("User exists");
         }
+
+
     }
 }
